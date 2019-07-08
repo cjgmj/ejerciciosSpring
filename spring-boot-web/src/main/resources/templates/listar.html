@@ -7,9 +7,10 @@
 <body>
 	<h1 th:text="${titulo}"></h1>
 
-	<div th:if="${usuarios.isEmpty()}">No hay usuarios en la lista</div>
+	<!-- Se pude añadir cadenas de texto dentro de th:text incluyendo el texto entre '. -->
+	<div th:if="${usuarios.isEmpty()}" th:text="'No hay usuarios en la lista'"></div>
 
-	<!-- not se usa solamente cuando un método devuelve un boolean, es igual que poner ! -->
+	<!-- not se usa solamente cuando un método devuelve un boolean, es igual que poner !. -->
 	<table th:if="${not usuarios.isEmpty()}">
 		<thead>
 			<tr>
