@@ -9,6 +9,8 @@
 	<ul>
 		<li><a th:href="@{/params/string(texto='Hola mundo')}">/params/string?texto=Hola mundo</a></li>
 		<li><a th:href="@{/params/string(texto='John Doe')}">/params/string?texto=John Doe</a></li>
+		<li><a th:href="@{/params/mix-params(saludo='Hola John', numero=7)}">/params/mix-params?saludo=Hola John&numero=7</a></li>
+		<li><a th:href="@{/params/mix-params-request(saludo='Hola John', numero=7)}">/params/mix-params-request?saludo=Hola John&numero=7</a></li>
 	</ul>
 </body>
 </html>
