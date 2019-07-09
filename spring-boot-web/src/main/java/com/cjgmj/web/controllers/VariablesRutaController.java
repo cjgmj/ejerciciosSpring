@@ -10,9 +10,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/variables")
 public class VariablesRutaController {
 
+	@GetMapping("/")
+	public String index(Model model) {
+		return "variables/index";
+	}
+
 	@GetMapping("/string/{texto}")
 	public String variables(@PathVariable String texto, Model model) {
 		model.addAttribute("resultado", "El texto enviado en la ruta es: " + texto);
+		return "variables/ver";
+	}
+
+	@GetMapping("/string/{texto}/{numero}")
+	public String variables(@PathVariable String texto, @PathVariable Integer numero, Model model) {
+		model.addAttribute("resultado",
+				"El texto enviado en la ruta es: " + texto + " y el número enviado en el path es: " + numero);
 		return "variables/ver";
 	}
 
