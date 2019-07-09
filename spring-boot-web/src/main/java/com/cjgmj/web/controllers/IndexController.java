@@ -17,13 +17,13 @@ import com.cjgmj.web.models.Usuario;
 @RequestMapping("/app")
 public class IndexController {
 
-	@Value("${texto.idexcontroller.index.titulo}")
+	@Value("${texto.indexcontroller.index.titulo}")
 	private String textoIndex;
 
-	@Value("${texto.idexcontroller.perfil.titulo}")
+	@Value("${texto.indexcontroller.perfil.titulo}")
 	private String textoPerfil;
 
-	@Value("${texto.idexcontroller.listar.titulo}")
+	@Value("${texto.indexcontroller.listar.titulo}")
 	private String textoListar;
 
 	@GetMapping({ "/index", "/", "", "/home" })
