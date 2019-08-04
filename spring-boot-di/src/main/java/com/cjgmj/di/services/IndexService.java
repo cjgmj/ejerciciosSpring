@@ -1,12 +1,7 @@
 package com.cjgmj.di.services;
 
-import org.springframework.stereotype.Component;
+public interface IndexService {
 
-@Component
-public class IndexService {
-
-	public String operacion() {
-		return "Ejecutando proceso";
-	}
+	public String operacion();
 
 }
