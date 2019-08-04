@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.cjgmj.di.services.IndexService;
 
-@Component("indexService")
+@Component
 public class IndexServiceImpl implements IndexService {
 
 	@Override
