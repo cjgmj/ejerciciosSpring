@@ -11,14 +11,18 @@ import com.cjgmj.di.services.IndexService;
 @Controller
 public class IndexController {
 
-	@Autowired
-	@Qualifier("indexService")
 	private IndexService indexService;
 
 	@GetMapping({ "/", "", "/index" })
 	public String index(Model model) {
 		model.addAttribute("objeto", indexService.operacion());
 		return "index";
+	}
+
+	@Autowired
+	@Qualifier("indexService")
+	public void setIndexService(IndexService indexService) {
+		this.indexService = indexService;
 	}
 
 }
