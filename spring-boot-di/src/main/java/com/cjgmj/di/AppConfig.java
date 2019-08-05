@@ -27,7 +27,7 @@ public class AppConfig {
 		return new IndexServiceComplejoImpl();
 	}
 
-	@Bean
+	@Bean("itemsFactura")
 	public List<ItemFactura> registrarItems() {
 		Producto producto1 = new Producto("Camara Sony", 100.0);
 		Producto producto2 = new Producto("Bicicleta Bianchi aro 26", 200.0);
@@ -36,6 +36,21 @@ public class AppConfig {
 		ItemFactura item2 = new ItemFactura(producto2, 4);
 
 		return Arrays.asList(item1, item2);
+	}
+
+	@Bean("itemsFacturaOficina")
+	public List<ItemFactura> registrarItemsOficina() {
+		Producto producto1 = new Producto("Monitor LG LCD 24", 250.0);
+		Producto producto2 = new Producto("Notebook Asus", 500.0);
+		Producto producto3 = new Producto("Impresora HP Multifuncional", 80.0);
+		Producto producto4 = new Producto("Escritorio Oficina", 300.0);
+
+		ItemFactura item1 = new ItemFactura(producto1, 2);
+		ItemFactura item2 = new ItemFactura(producto2, 1);
+		ItemFactura item3 = new ItemFactura(producto3, 1);
+		ItemFactura item4 = new ItemFactura(producto4, 1);
+
+		return Arrays.asList(item1, item2, item3, item4);
 	}
 
 }
