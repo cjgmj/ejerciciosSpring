@@ -2,6 +2,9 @@ package com.cjgmj.di.domain;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +22,17 @@ public class Factura {
 	@Autowired
 	@Qualifier("itemsFacturaOficina")
 	private List<ItemFactura> items;
+
+	@PostConstruct
+	public void inicializar() {
+		cliente.setNombre(cliente.getNombre().concat(" ").concat("Joe"));
+		descripcion = descripcion.concat(" del cliente: ").concat(cliente.getNombre());
+	}
+
+	@PreDestroy
+	public void destruir() {
+		System.out.println("Factura destruida: ".concat(descripcion));
+	}
 
 	public String getDescripcion() {
 		return descripcion;
