@@ -1,5 +1,6 @@
 package com.cjgmj.di.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -9,9 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
 
 @Component
-public class Factura {
+// @RequestScope - El Bean se crea nuevamente con cada petición, es decir, es único por cada usuario.
+// @SessionScope - El Bean dura mientras la sesión esté abierta, se destruye cuando se cierra el navegador, 
+//                 cuando se produce un Timeout o cuando se invalida la sesión. Debe implementar Serializable.
+// @ApplicationScope - El Bean dura el tiempo del contexto de la aplicación.
+@RequestScope
+public class Factura implements Serializable {
+
+	private static final long serialVersionUID = -8988150809539357329L;
 
 	@Value("${factura.descripcion}")
 	private String descripcion;
