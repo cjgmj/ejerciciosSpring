@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cjgmj.datajpa.dao.IClienteDao;
 import com.cjgmj.datajpa.entity.Cliente;
 
-@Repository
+@Repository("clienteDaoJPA")
 public class ClienteDaoImpl implements IClienteDao {
 
 	@PersistenceContext
