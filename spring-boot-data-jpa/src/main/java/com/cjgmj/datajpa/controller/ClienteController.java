@@ -5,7 +5,6 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.cjgmj.datajpa.dao.IClienteDao;
 import com.cjgmj.datajpa.entity.Cliente;
+import com.cjgmj.datajpa.service.IClienteService;
 
 @Controller
 // Para no tener un campo oculto con el id del cliente en el formulario, guardamos el cliente en la sesión hasta que se realizar el registro
@@ -24,13 +23,12 @@ import com.cjgmj.datajpa.entity.Cliente;
 public class ClienteController {
 
 	@Autowired
-	@Qualifier("clienteDaoJPA")
-	private IClienteDao clienteDao;
+	private IClienteService clienteService;
 
 	@RequestMapping(value = "listar", method = RequestMethod.GET)
 	public String listar(Model model) {
 		model.addAttribute("titulo", "Listado de clientes");
-		model.addAttribute("clientes", clienteDao.findAll());
+		model.addAttribute("clientes", clienteService.findAll());
 		return "listar";
 	}
 
@@ -53,7 +51,7 @@ public class ClienteController {
 			return "form";
 		}
 
-		clienteDao.save(cliente);
+		clienteService.save(cliente);
 		status.setComplete();
 		return "redirect:/listar";
 	}
@@ -62,7 +60,7 @@ public class ClienteController {
 	public String editar(@PathVariable Long id, Map<String, Object> model) {
 		Cliente cliente = null;
 		if (id > 0) {
-			cliente = clienteDao.findOne(id);
+			cliente = clienteService.findOne(id);
 		} else {
 			return "redirect:listar";
 		}
@@ -74,7 +72,7 @@ public class ClienteController {
 	@RequestMapping(value = "/eliminar/{id}")
 	public String eliminar(@PathVariable Long id) {
 		if (id > 0) {
-			clienteDao.delete(id);
+			clienteService.delete(id);
 		}
 		return "redirect:/listar";
 	}

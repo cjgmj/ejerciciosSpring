@@ -1,10 +1,10 @@
-package com.cjgmj.datajpa.dao;
+package com.cjgmj.datajpa.service;
 
 import java.util.List;
 
 import com.cjgmj.datajpa.entity.Cliente;
 
-public interface IClienteDao {
+public interface IClienteService {
 
 	public List<Cliente> findAll();
 
