@@ -9,13 +9,18 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.cjgmj.datajpa.dao.IClienteDao;
 import com.cjgmj.datajpa.entity.Cliente;
 
 @Controller
+// Para no tener un campo oculto con el id del cliente en el formulario, guardamos el cliente en la sesión hasta que se realizar el registro
+@SessionAttributes("cliente")
 public class ClienteController {
 
 	@Autowired
@@ -42,14 +47,28 @@ public class ClienteController {
 	// Pasa automáticamente el objeto si la clase se llama igual al atributo en la
 	// vista, sin tener en cuenta las mayúculas y minúsculas. Si el nombre es
 	// distinto de se usar @ModelAttribute indicando el nombre en la vista
-	public String guardar(@Valid Cliente cliente, BindingResult result, Model model) {
+	public String guardar(@Valid Cliente cliente, BindingResult result, Model model, SessionStatus status) {
 		if (result.hasErrors()) {
 			model.addAttribute("titulo", "Formulario de Cliente");
 			return "form";
 		}
 
 		clienteDao.save(cliente);
+		status.setComplete();
 		return "redirect:listar";
+	}
+
+	@RequestMapping(value = "/form/{id}")
+	public String editar(@PathVariable Long id, Map<String, Object> model) {
+		Cliente cliente = null;
+		if (id > 0) {
+			cliente = clienteDao.findOne(id);
+		} else {
+			return "redirect:listar";
+		}
+		model.put("titulo", "Editar Cliente");
+		model.put("cliente", cliente);
+		return "form";
 	}
 
 }
