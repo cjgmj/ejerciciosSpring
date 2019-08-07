@@ -2,10 +2,13 @@ package com.cjgmj.datajpa.controller;
 
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -35,7 +38,16 @@ public class ClienteController {
 	}
 
 	@RequestMapping(value = "/form", method = RequestMethod.POST)
-	public String guardar(Cliente cliente) {
+	// Siempre debe ir el objeto seguido del BindingResult.
+	// Pasa automáticamente el objeto si la clase se llama igual al atributo en la
+	// vista, sin tener en cuenta las mayúculas y minúsculas. Si el nombre es
+	// distinto de se usar @ModelAttribute indicando el nombre en la vista
+	public String guardar(@Valid Cliente cliente, BindingResult result, Model model) {
+		if (result.hasErrors()) {
+			model.addAttribute("titulo", "Formulario de Cliente");
+			return "form";
+		}
+
 		clienteDao.save(cliente);
 		return "redirect:listar";
 	}
