@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cjgmj.datajpa.entity.Cliente;
 import com.cjgmj.datajpa.service.IClienteService;
+import com.cjgmj.datajpa.util.paginator.PageRender;
 
 @Controller
 // Para no tener un campo oculto con el id del cliente en el formulario, guardamos el cliente en la sesión hasta que se realizar el registro
@@ -35,9 +36,11 @@ public class ClienteController {
 		Pageable pageRequest = PageRequest.of(page, 5);
 
 		Page<Cliente> clientes = clienteService.findAll(pageRequest);
+		PageRender<Cliente> pageRender = new PageRender<>("/listar", clientes);
 
 		model.addAttribute("titulo", "Listado de clientes");
 		model.addAttribute("clientes", clientes);
+		model.addAttribute("page", pageRender);
 		return "listar";
 	}
 
