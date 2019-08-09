@@ -5,9 +5,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +36,8 @@ import com.cjgmj.datajpa.util.paginator.PageRender;
 // Para no tener un campo oculto con el id del cliente en el formulario, guardamos el cliente en la sesión hasta que se realizar el registro
 @SessionAttributes("cliente")
 public class ClienteController {
+
+	private final static Logger LOG = LoggerFactory.getLogger(ClienteController.class);
 
 	@Autowired
 	private IClienteService clienteService;
@@ -86,14 +91,22 @@ public class ClienteController {
 		}
 
 		if (!foto.isEmpty()) {
-			String rootPath = "C://Temp//uploads";
+			String fName = foto.getOriginalFilename();
+			String[] arrFileName = fName.split("[.]");
+			String fileName = fName.replace("." + arrFileName[arrFileName.length - 1], "");
+			String uniqueFilename = fileName + "_" + UUID.randomUUID().toString() + "."
+					+ arrFileName[arrFileName.length - 1];
+			Path rootPath = Paths.get("uploads").resolve(uniqueFilename);
+			Path rootAbsolutPath = rootPath.toAbsolutePath();
+
+			LOG.info("Ruta: " + rootPath);
+			LOG.info("Ruta absoluta: " + rootAbsolutPath);
+
 			try {
-				byte[] bytes = foto.getBytes();
-				Path rutaCompleta = Paths.get(rootPath + "//" + foto.getOriginalFilename());
-				Files.write(rutaCompleta, bytes);
+				Files.copy(foto.getInputStream(), rootAbsolutPath);
 				flash.addFlashAttribute("info", "La imagen se ha subido correctamente");
 
-				cliente.setFoto(foto.getOriginalFilename());
+				cliente.setFoto(uniqueFilename);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
