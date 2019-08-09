@@ -1,21 +1,13 @@
 package com.cjgmj.datajpa.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cjgmj.datajpa.entity.Cliente;
 import com.cjgmj.datajpa.service.IClienteService;
+import com.cjgmj.datajpa.service.IUploadFileService;
 import com.cjgmj.datajpa.util.paginator.PageRender;
 
 @Controller
@@ -43,29 +36,20 @@ import com.cjgmj.datajpa.util.paginator.PageRender;
 @SessionAttributes("cliente")
 public class ClienteController {
 
-	private final static Logger LOG = LoggerFactory.getLogger(ClienteController.class);
-
-	private final static String UPLOADS_FOLDER = "uploads";
-
 	@Autowired
 	private IClienteService clienteService;
+
+	@Autowired
+	private IUploadFileService uploadFileService;
 
 	// :.+ permite que Spring no borre la extensión del archivo, por defecto quita
 	// la extensión
 	@GetMapping(value = "/uploads/{filename:.+}")
 	public ResponseEntity<Resource> verFoto(@PathVariable String filename) {
-		Path pathFoto = Paths.get(UPLOADS_FOLDER).resolve(filename).toAbsolutePath();
-
-		LOG.info("Ruta foto: " + pathFoto);
-
 		Resource recurso = null;
 
 		try {
-			recurso = new UrlResource(pathFoto.toUri());
-
-			if (!recurso.exists() || !recurso.isReadable()) {
-				throw new RuntimeException("Error: no se puede cargar la imagen: " + pathFoto.toString());
-			}
+			recurso = uploadFileService.load(filename);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
@@ -127,30 +111,12 @@ public class ClienteController {
 
 			if (cliente.getId() != null && cliente.getId() > 0 && cliente.getFoto() != null
 					&& cliente.getFoto().length() > 0) {
-				Path rootPath = Paths.get(UPLOADS_FOLDER).resolve(cliente.getFoto()).toAbsolutePath();
-				File archivo = rootPath.toFile();
-
-				if (archivo.exists() && archivo.canRead()) {
-					archivo.delete();
-				}
+				uploadFileService.delete(cliente.getFoto());
 			}
 
-			String fName = foto.getOriginalFilename();
-			String[] arrFileName = fName.split("[.]");
-			String fileName = fName.replace("." + arrFileName[arrFileName.length - 1], "");
-			String uniqueFilename = fileName + "_" + UUID.randomUUID().toString() + "."
-					+ arrFileName[arrFileName.length - 1];
-			Path rootPath = Paths.get(UPLOADS_FOLDER).resolve(uniqueFilename);
-			Path rootAbsolutPath = rootPath.toAbsolutePath();
-
-			LOG.info("Ruta: " + rootPath);
-			LOG.info("Ruta absoluta: " + rootAbsolutPath);
-
 			try {
-				Files.copy(foto.getInputStream(), rootAbsolutPath);
+				cliente.setFoto(uploadFileService.copy(foto));
 				flash.addFlashAttribute("info", "La imagen se ha subido correctamente");
-
-				cliente.setFoto(uniqueFilename);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -190,13 +156,8 @@ public class ClienteController {
 			clienteService.delete(id);
 			flash.addFlashAttribute("success", "Cliente eliminado con éxito");
 
-			Path rootPath = Paths.get(UPLOADS_FOLDER).resolve(cliente.getFoto()).toAbsolutePath();
-			File archivo = rootPath.toFile();
-
-			if (archivo.exists() && archivo.canRead()) {
-				if (archivo.delete()) {
-					flash.addFlashAttribute("info", "Foto eliminada con éxito");
-				}
+			if (uploadFileService.delete(cliente.getFoto())) {
+				flash.addFlashAttribute("info", "Foto eliminada con éxito");
 			}
 		}
 		return "redirect:/listar";
