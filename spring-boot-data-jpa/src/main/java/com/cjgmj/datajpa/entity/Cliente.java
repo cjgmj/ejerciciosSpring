@@ -56,7 +56,7 @@ public class Cliente implements Serializable {
 	private List<Factura> facturas;
 
 	public Cliente() {
-		facturas = new ArrayList<>();
+		this.facturas = new ArrayList<>();
 	}
 
 	public Long getId() {
@@ -116,7 +116,7 @@ public class Cliente implements Serializable {
 	}
 
 	public void addFactura(Factura factura) {
-		facturas.add(factura);
+		this.facturas.add(factura);
 	}
 
 }
