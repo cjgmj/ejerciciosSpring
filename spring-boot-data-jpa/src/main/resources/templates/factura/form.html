@@ -4,8 +4,8 @@
 <body>
 	<header th:replace="layout/layout :: header"></header>
 
-	<div class="container py-4 text-white">
-		<div class="card bg-dark">
+	<div class="container py-4">
+		<div class="card">
 			<div class="card-header" th:text="${titulo}"></div>
 			<div class="card-body">
 				<h4 class="card-title">
@@ -44,6 +44,19 @@
 						</div>
 					</div>
 					<table th:replace="factura/plantilla-items :: itemsFactura"></table>
+
+					<table id="cargarItemProductos"
+						class="table table-sm table-striped table-hover">
+						<thead>
+							<tr>
+								<th>Nombre</th>
+								<th>Precio</th>
+								<th>Cantidad</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+
 					<div class="form-group">
 						<div class="col-sm-6">
 							<input type="submit" value="Crear Factura"
