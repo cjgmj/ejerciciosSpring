@@ -14,7 +14,8 @@
 						success : function(data) {
 							response($.map(data, function(item) {
 								return {
-									value : item.id,
+									id : item.id,
+									value: item.nombre,
 									label : item.nombre,
 									precio : item.precio
 								}

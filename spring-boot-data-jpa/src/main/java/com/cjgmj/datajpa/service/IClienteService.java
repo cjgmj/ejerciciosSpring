@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.cjgmj.datajpa.entity.Cliente;
+import com.cjgmj.datajpa.entity.Producto;
 
 public interface IClienteService {
 
@@ -18,5 +19,7 @@ public interface IClienteService {
 	public void save(Cliente cliente);
 
 	public void delete(Long id);
+
+	public List<Producto> findByNombre(String term);
 
 }
