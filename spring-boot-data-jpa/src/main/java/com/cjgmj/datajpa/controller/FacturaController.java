@@ -37,6 +37,21 @@ public class FacturaController {
 
 	private final static Logger LOG = LoggerFactory.getLogger(FacturaController.class);
 
+	@GetMapping("/ver/{id}")
+	public String ver(@PathVariable Long id, Model model, RedirectAttributes flash) {
+		Factura factura = clienteService.findFacturaById(id);
+
+		if (factura == null) {
+			flash.addFlashAttribute("error", "La factura no existe");
+			return "redirect:/listar";
+		}
+
+		model.addAttribute("titulo", "Factura: ".concat(factura.getDescripcion()));
+		model.addAttribute("factura", factura);
+
+		return "factura/ver";
+	}
+
 	@GetMapping("/form/{clienteId}")
 	public String crear(@PathVariable Long clienteId, Map<String, Object> model, RedirectAttributes flash) {
 		Cliente cliente = clienteService.findOne(clienteId);
