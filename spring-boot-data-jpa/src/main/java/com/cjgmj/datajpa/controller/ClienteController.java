@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;
@@ -21,6 +22,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -86,7 +88,7 @@ public class ClienteController {
 
 	@RequestMapping(value = { "/", "/listar" }, method = RequestMethod.GET)
 	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model,
-			Authentication authentication) {
+			Authentication authentication, HttpServletRequest request) {
 
 		if (authentication != null) {
 			LOG.info("El usuario '".concat(authentication.getName()).concat("' ha realizado la petición de listar"));
@@ -100,10 +102,28 @@ public class ClienteController {
 					.concat("' ha realizado la petición de listar"));
 		}
 
+		// Validar rol manualmente
 		if (hasRole("ROLE_ADMIN")) {
 			LOG.info("Hola ".concat(auth.getName()).concat(" tienes acceso"));
 		} else {
 			LOG.info("Hola ".concat(auth.getName()).concat(" no tienes acceso"));
+		}
+
+		// Validar rol con SecurityContextHolderAwareRequestWrapper
+		SecurityContextHolderAwareRequestWrapper securityContext = new SecurityContextHolderAwareRequestWrapper(request,
+				"ROLE_");
+
+		if (securityContext.isUserInRole("ADMIN")) {
+			LOG.info("SecurityContext - Hola ".concat(auth.getName()).concat(" tienes acceso"));
+		} else {
+			LOG.info("SecurityContext - Hola ".concat(auth.getName()).concat(" no tienes acceso"));
+		}
+
+		// Validar rol con HttpServletRequest
+		if (request.isUserInRole("ROLE_ADMIN")) {
+			LOG.info("HttpServletRequest - Hola ".concat(auth.getName()).concat(" tienes acceso"));
+		} else {
+			LOG.info("HttpServletRequest - Hola ".concat(auth.getName()).concat(" no tienes acceso"));
 		}
 
 		Pageable pageRequest = PageRequest.of(page, 5);
