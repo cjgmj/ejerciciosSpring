@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -17,6 +18,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -56,6 +59,9 @@ public class ClienteController {
 
 	// :.+ permite que Spring no borre la extensión del archivo, por defecto quita
 	// la extensión
+	// Para poner varios roles con Secured se separan con comas entre corchetes.
+	// Ejemplo: { "ROLE_USER", "ROLE_ADMIN" }
+	@Secured("ROLE_USER")
 	@GetMapping(value = "/uploads/{filename:.+}")
 	public ResponseEntity<Resource> verFoto(@PathVariable String filename) {
 		Resource recurso = null;
@@ -71,6 +77,9 @@ public class ClienteController {
 				.body(recurso);
 	}
 
+	// Para poner varios roles con @PreAuthorize se usa el método hasAnyRole.
+	// Ejemplo: hasAnyRole('ROLE_USER', 'ROLE_ADMIN')
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping(value = "/ver/{id}")
 	public String ver(@PathVariable Long id, Map<String, Object> model, RedirectAttributes flash) {
 		Cliente cliente = clienteService.fetchClienteById(id);
@@ -86,6 +95,7 @@ public class ClienteController {
 		return "ver";
 	}
 
+	@PermitAll
 	@RequestMapping(value = { "/", "/listar" }, method = RequestMethod.GET)
 	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model,
 			Authentication authentication, HttpServletRequest request) {
@@ -137,6 +147,7 @@ public class ClienteController {
 		return "listar";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/form")
 	public String crear(Map<String, Object> model) {
 		Cliente cliente = new Cliente();
@@ -145,6 +156,7 @@ public class ClienteController {
 		return "form";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/form", method = RequestMethod.POST)
 	// Siempre debe ir el objeto seguido del BindingResult.
 	// Pasa automáticamente el objeto si la clase se llama igual al atributo en la
@@ -180,6 +192,7 @@ public class ClienteController {
 		return "redirect:/listar";
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/form/{id}")
 	public String editar(@PathVariable Long id, Map<String, Object> model, RedirectAttributes flash) {
 		Cliente cliente = null;
@@ -198,6 +211,7 @@ public class ClienteController {
 		return "form";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/eliminar/{id}")
 	public String eliminar(@PathVariable Long id, RedirectAttributes flash) {
 		if (id > 0) {
