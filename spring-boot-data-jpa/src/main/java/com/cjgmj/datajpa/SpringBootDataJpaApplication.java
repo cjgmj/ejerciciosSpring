@@ -26,12 +26,11 @@ public class SpringBootDataJpaApplication implements CommandLineRunner {
 		uploadFileService.deleteAll();
 		uploadFileService.init();
 
-		String password = "12345";
+		String passwordAdmin = "admin";
+		System.out.println(passwordEncoder.encode(passwordAdmin));
 
-		for (int i = 0; i < 2; i++) {
-			String bcryptPassword = passwordEncoder.encode(password);
-			System.out.println(bcryptPassword);
-		}
+		String passwordUser = "user";
+		System.out.println(passwordEncoder.encode(passwordUser));
 	}
 
 }

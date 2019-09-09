@@ -46,3 +46,12 @@ INSERT INTO facturas_items (cantidad, factura_id, producto_id) VALUES (2, 1, 4);
 INSERT INTO facturas_items (cantidad, factura_id, producto_id) VALUES (1, 1, 5);
 INSERT INTO facturas_items (cantidad, factura_id, producto_id) VALUES (1, 1, 7);
 INSERT INTO facturas_items (cantidad, factura_id, producto_id) VALUES (3, 2, 6);
+
+/* Populate tabla users */
+INSERT INTO users (username, password, enabled) VALUES ('user', '$2a$10$FA/8kTKYKGJ2WFVwzm7o2uz.9R28egKqpJRO.E7zsYk1er5NFYa.y', 1);
+INSERT INTO users (username, password, enabled) VALUES ('admin', '$2a$10$P8BQ1owqh7uOL.c6/ugKrOSJtIS2Iycw2TLVWKbiJtKXiEo90pEru', 1);
+
+/* Populate tabla authorities */
+INSERT INTO authorities (user_id, authority) VALUES (1, 'ROLE_USER');
+INSERT INTO authorities (user_id, authority) VALUES (2, 'ROLE_USER');
+INSERT INTO authorities (user_id, authority) VALUES (2, 'ROLE_ADMIN');
