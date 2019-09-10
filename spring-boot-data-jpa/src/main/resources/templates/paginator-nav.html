@@ -3,11 +3,12 @@
 <body>
 	<nav th:fragment="paginator">
 		<ul class="pagination">
+		<!-- Para no escapar los carácteres especiales hay que usar th:utext -->
 			<li class="page-item"
 				th:class="${page.first ? 'page-item disabled' : 'page-item'}">
-				<span class="page-link" th:if="${page.first}">&lt;&lt;</span> <a
+				<span class="page-link" th:if="${page.first}" th:text="#{text.paginator.first}">&lt;&lt;</span> <a
 				class="page-link" th:if="${not page.first}"
-				th:href="@{${page.url}(page=0)}">&lt;&lt;</a>
+				th:href="@{${page.url}(page=0)}" th:text="#{text.paginator.first}">&lt;&lt;</a>
 			</li>
 
 			<li class="page-item"
@@ -33,9 +34,9 @@
 
 			<li class="page-item"
 				th:class="${page.last ? 'page-item disabled' : 'page-item'}"><span
-				class="page-link" th:if="${page.last}">&gt;&gt;</span> <a
+				class="page-link" th:if="${page.last}" th:text="#{text.paginator.last}">&gt;&gt;</span> <a
 				class="page-link" th:if="${not page.last}"
-				th:href="@{${page.url}(page=${page.totalPages-1})}">&gt;&gt;</a></li>
+				th:href="@{${page.url}(page=${page.totalPages-1})}" th:text="#{text.paginator.last}">&gt;&gt;</a></li>
 		</ul>
 	</nav>
 </body>
