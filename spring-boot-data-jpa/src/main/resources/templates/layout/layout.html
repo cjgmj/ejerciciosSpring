@@ -30,10 +30,9 @@
 							sesión</a></li>
 
 					<li sec:authorize="isAuthenticated()" class="dropdown"><a
-						class="btn btn-primary dropdown-toggle" href="#"
-						role="button" id="dropdownMenuLink" data-toggle="dropdown"
-						aria-haspopup="true" aria-expanded="false"><span
-							sec:authentication="name"></span></a>
+						class="btn btn-primary dropdown-toggle" href="#" role="button"
+						id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+						aria-expanded="false"><span sec:authentication="name"></span></a>
 
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 							<form id="logoutForm" th:action="@{/logout}" method="post">
@@ -44,6 +43,14 @@
 									th:value="${_csrf.token}" />
 							</form>
 						</div></li>
+				</ul>
+				<ul class="navbar-nav mx-4">
+					<li class="nav-item mx-1"><a class="btn btn-outline-success"
+						href="?lang=es_ES">ES</a></li>
+					<li class="nav-item mx-1"><a class="btn btn-outline-success"
+						href="?lang=en_US">EN</a></li>
+					<li class="nav-item mx-1"><a class="btn btn-outline-success"
+						href="?lang=de_DE">DE</a></li>
 				</ul>
 			</div>
 		</nav>
