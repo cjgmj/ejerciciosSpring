@@ -1,5 +1,6 @@
 package com.cjgmj.datajpa.view.pdf;
 
+import java.awt.Color;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,8 @@ import org.springframework.web.servlet.view.document.AbstractPdfView;
 import com.cjgmj.datajpa.entity.Factura;
 import com.cjgmj.datajpa.entity.ItemFactura;
 import com.lowagie.text.Document;
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
@@ -26,31 +29,63 @@ public class FacturaPdfView extends AbstractPdfView {
 
 		PdfPTable tabla = new PdfPTable(1);
 		tabla.setSpacingAfter(20);
-		tabla.addCell("Datos del cliente");
+
+		Font font = new Font();
+		font.setColor(0, 64, 133);
+		PdfPCell cell = new PdfPCell(new Phrase("Datos del cliente", font));
+		cell.setBackgroundColor(new Color(184, 218, 255));
+		cell.setPadding(8f);
+
+		tabla.addCell(cell);
 		tabla.addCell(factura.getCliente().getNombre() + " " + factura.getCliente().getApellido());
 		tabla.addCell(factura.getCliente().getEmail());
 
 		PdfPTable tabla2 = new PdfPTable(1);
 		tabla2.setSpacingAfter(20);
-		tabla2.addCell("Datos de la factura");
+
+		font = new Font();
+		font.setColor(21, 87, 36);
+		cell = new PdfPCell(new Phrase("Datos de la factura", font));
+		cell.setBackgroundColor(new Color(195, 230, 203));
+		cell.setPadding(8f);
+
+		tabla2.addCell(cell);
 		tabla2.addCell("Factura: " + factura.getId());
 		tabla2.addCell("Descripción: " + factura.getDescripcion());
 		tabla2.addCell("Fecha: " + factura.getCreateAt());
 
 		PdfPTable tabla3 = new PdfPTable(4);
-		tabla3.addCell("Producto");
-		tabla3.addCell("Precio");
-		tabla3.addCell("Cantidad");
-		tabla3.addCell("Total");
+		tabla3.setWidths(new float[] { 3.5f, 1f, 1f, 1f });
+
+		font = new Font();
+		font.setStyle(Font.BOLD);
+		font.setSize(14);
+		font.setFamily(FontFactory.HELVETICA);
+
+		cell = new PdfPCell(new Phrase("Producto", font));
+		tabla3.addCell(cell);
+
+		cell = new PdfPCell(new Phrase("Precio", font));
+		tabla3.addCell(cell);
+
+		cell = new PdfPCell(new Phrase("Cantidad", font));
+		tabla3.addCell(cell);
+
+		cell = new PdfPCell(new Phrase("Total", font));
+		tabla3.addCell(cell);
 
 		for (ItemFactura item : factura.getItems()) {
 			tabla3.addCell(item.getProducto().getNombre());
 			tabla3.addCell(item.getProducto().getPrecio().toString());
-			tabla3.addCell(item.getCantidad().toString());
+
+			cell = new PdfPCell(new Phrase(item.getCantidad().toString()));
+			cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+
+			tabla3.addCell(cell);
 			tabla3.addCell(item.calcularImporte().toString());
 		}
 
-		PdfPCell cell = new PdfPCell(new Phrase("Total: "));
+		cell = new PdfPCell(new Phrase("Total: "));
 		cell.setColspan(3);
 		cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
 		tabla3.addCell(cell);
