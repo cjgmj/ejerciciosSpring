@@ -1,12 +1,17 @@
 package com.cjgmj.datajpa.view.pdf;
 
 import java.awt.Color;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.view.document.AbstractPdfView;
 
 import com.cjgmj.datajpa.entity.Factura;
@@ -22,17 +27,29 @@ import com.lowagie.text.pdf.PdfWriter;
 @Component("factura/ver")
 public class FacturaPdfView extends AbstractPdfView {
 
+	@Autowired
+	private MessageSource messageSource;
+
+	@Autowired
+	private LocaleResolver localeResolver;
+
 	@Override
 	protected void buildPdfDocument(Map<String, Object> model, Document document, PdfWriter writer,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Factura factura = (Factura) model.get("factura");
+
+		Locale locale = localeResolver.resolveLocale(request);
+
+		// Forma más sencilla que a través de MessageSource
+		MessageSourceAccessor mensajes = getMessageSourceAccessor();
 
 		PdfPTable tabla = new PdfPTable(1);
 		tabla.setSpacingAfter(20);
 
 		Font font = new Font();
 		font.setColor(0, 64, 133);
-		PdfPCell cell = new PdfPCell(new Phrase("Datos del cliente", font));
+		PdfPCell cell = new PdfPCell(
+				new Phrase(messageSource.getMessage("text.factura.ver.datos.cliente", null, locale), font));
 		cell.setBackgroundColor(new Color(184, 218, 255));
 		cell.setPadding(8f);
 
@@ -45,14 +62,14 @@ public class FacturaPdfView extends AbstractPdfView {
 
 		font = new Font();
 		font.setColor(21, 87, 36);
-		cell = new PdfPCell(new Phrase("Datos de la factura", font));
+		cell = new PdfPCell(new Phrase(messageSource.getMessage("text.factura.ver.datos.factura", null, locale), font));
 		cell.setBackgroundColor(new Color(195, 230, 203));
 		cell.setPadding(8f);
 
 		tabla2.addCell(cell);
-		tabla2.addCell("Factura: " + factura.getId());
-		tabla2.addCell("Descripción: " + factura.getDescripcion());
-		tabla2.addCell("Fecha: " + factura.getCreateAt());
+		tabla2.addCell(mensajes.getMessage("text.cliente.factura.factura") + ": " + factura.getId());
+		tabla2.addCell(mensajes.getMessage("text.cliente.factura.descripcion") + ": " + factura.getDescripcion());
+		tabla2.addCell(mensajes.getMessage("text.cliente.factura.fecha") + ": " + factura.getCreateAt());
 
 		PdfPTable tabla3 = new PdfPTable(4);
 		tabla3.setWidths(new float[] { 3.5f, 1f, 1f, 1f });
