@@ -13,7 +13,8 @@
 				<h4 class="card-title">
 					<a sec:authorize="hasRole('ROLE_ADMIN')"
 						class="btn btn-primary btn-xs" th:href="@{/form}">Crear
-						cliente </a>
+						cliente </a> <a class="btn btn-success btn-xs float-right mb-2"
+						th:href="@{'/listar'(format=csv)}">Exportar CSV</a>
 				</h4>
 				<table class="table table-striped">
 					<thead>
