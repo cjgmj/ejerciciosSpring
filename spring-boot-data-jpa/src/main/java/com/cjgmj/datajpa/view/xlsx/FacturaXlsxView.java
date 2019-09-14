@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.document.AbstractXlsxView;
 
 import com.cjgmj.datajpa.entity.Factura;
+import com.cjgmj.datajpa.entity.ItemFactura;
 
 @Component("factura/ver.xlsx")
 public class FacturaXlsxView extends AbstractXlsxView {
@@ -39,6 +40,26 @@ public class FacturaXlsxView extends AbstractXlsxView {
 		sheet.createRow(5).createCell(0).setCellValue("Factura: " + factura.getId());
 		sheet.createRow(6).createCell(0).setCellValue("Descripción: " + factura.getDescripcion());
 		sheet.createRow(7).createCell(0).setCellValue("Fecha: " + factura.getCreateAt());
+
+		Row header = sheet.createRow(9);
+		header.createCell(0).setCellValue("Producto");
+		header.createCell(1).setCellValue("Precio");
+		header.createCell(2).setCellValue("Cantidad");
+		header.createCell(3).setCellValue("Total");
+
+		int rownum = 10;
+		for (ItemFactura item : factura.getItems()) {
+			Row fila = sheet.createRow(rownum++);
+			fila.createCell(0).setCellValue(item.getProducto().getNombre());
+			fila.createCell(1).setCellValue(item.getProducto().getPrecio());
+			fila.createCell(2).setCellValue(item.getCantidad());
+			fila.createCell(3).setCellValue(item.calcularImporte());
+		}
+
+		Row total = sheet.createRow(rownum);
+		total.createCell(2).setCellValue("Total: ");
+		total.createCell(3).setCellValue(factura.getTotal());
+
 	}
 
 }
