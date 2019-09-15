@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,6 +46,7 @@ import com.cjgmj.datajpa.entity.Cliente;
 import com.cjgmj.datajpa.service.IClienteService;
 import com.cjgmj.datajpa.service.IUploadFileService;
 import com.cjgmj.datajpa.util.paginator.PageRender;
+import com.cjgmj.datajpa.view.xml.ClienteList;
 
 @Controller
 // Para no tener un campo oculto con el id del cliente en el formulario, guardamos el cliente en la sesión hasta que se realizar el registro
@@ -98,6 +100,15 @@ public class ClienteController {
 		model.put("cliente", cliente);
 
 		return "ver";
+	}
+
+	@PermitAll
+	// Por defecto el method es GET
+	// Por defecto va a devolver XML, para obtener el JSON incluir en la URL
+	// ?format=json
+	@RequestMapping(value = "/listar-rest")
+	public @ResponseBody ClienteList listarRest() {
+		return new ClienteList(clienteService.findAll());
 	}
 
 	@PermitAll
