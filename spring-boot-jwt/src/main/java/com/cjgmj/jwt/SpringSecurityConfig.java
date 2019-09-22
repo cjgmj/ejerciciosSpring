@@ -9,15 +9,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.cjgmj.jwt.auth.handler.LoginSuccessHandler;
+import com.cjgmj.jwt.auth.filter.JWTAuthenticationFilter;
 import com.cjgmj.jwt.service.impl.JpaUserDetailsService;
 
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private LoginSuccessHandler successHandler;
+//	@Autowired
+//	private LoginSuccessHandler successHandler;
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -27,11 +27,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-				.antMatchers("/", "/css/**", "/js/**", "/images/**", "/listar**", "/locale", "/api/clientes/listar")
-				.permitAll().anyRequest().authenticated().and().formLogin().successHandler(successHandler)
-				.loginPage("/login").permitAll().and().logout().permitAll().and().exceptionHandling()
-				.accessDeniedPage("/error_403").and().csrf().disable().sessionManagement()
+		http.authorizeRequests().antMatchers("/", "/css/**", "/js/**", "/images/**", "/listar**", "/locale").permitAll()
+				.anyRequest().authenticated()/*
+												 * .and().formLogin().successHandler(successHandler).loginPage("/login")
+												 * .permitAll().and().logout().permitAll().and().exceptionHandling().
+												 * accessDeniedPage("/error_403")
+												 */.and()
+				.addFilter(new JWTAuthenticationFilter(authenticationManager())).csrf().disable().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 
