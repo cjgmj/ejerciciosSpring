@@ -64,9 +64,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				logger.info("Username desde request parameter (raw): " + username);
 				logger.info("Password desde request parameter (raw): " + password);
 
-			} catch (JsonParseException e) {
-				e.printStackTrace();
-			} catch (JsonMappingException e) {
+			} catch (JsonParseException | JsonMappingException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
