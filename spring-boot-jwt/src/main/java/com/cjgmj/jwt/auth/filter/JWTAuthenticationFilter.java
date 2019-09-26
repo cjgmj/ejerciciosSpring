@@ -105,4 +105,16 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		response.setContentType("application/json");
 	}
 
+	@Override
+	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException failed) throws IOException, ServletException {
+		Map<String, Object> body = new HashMap<>();
+		body.put("mensaje", "Usuario o contraseña incorrectas");
+		body.put("error", failed.getMessage());
+
+		response.getWriter().write(new ObjectMapper().writeValueAsString(body));
+		response.setStatus(401);
+		response.setContentType("application/json");
+	}
+
 }
