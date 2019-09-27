@@ -3,7 +3,7 @@
 ### Para desplegar la aplicación desde terminal con el tomcat embebido
 1. Realizamos un `mvn install` al proyecto para compilarlo.
 2. Accedemos desde el terminal a la raíz del proyecto.
-3. Ejecutamos `java -jar` al JAR generado por maven, dentro de la carpeta `target`.
+3. Ejecutamos `java -jar` al JAR o WAR generado por maven, dentro de la carpeta `target`.
 
 ### Para desplegar la aplicación en un Tomcat externo
 1. Cambiar el packaging a `war`.
@@ -35,3 +35,15 @@
 9. Para acceder a la aplicación, abrir en el navegador la ruta `localhost:8080/nombre_proyecto` donde `nombre_proyecto` es el nombre del archivo `war`.
 10. En la consola de jboss, ejecutar `undeploy nombre_war` para replegar la aplicación.
 11. En la consola de jboss, ejecutar `shutdown` para parar el servidor, y salimos de la consola con `exit`.
+
+### Para desplegar la aplicación en un Glassfish externo
+1. Se puede cambiar la configuración dentro de la carpeta `domains\domain1\config`.
+2. Iniciar el servido lanzando `.\asadmin.bat start-domain` dentro de la carpeta `bin` del servidor.
+3. Se puede usar el proyecto compilado para Tomcat.
+4. Para desplegar la aplicación lanzar `.\asadmin.bat deploy ruta_war` donde `ruta_war` es la dirección dentro de la carpeta `target` para desplegar la aplicación.
+5. Para ver las aplicaciones desplegadas en el servidor lanzar `.\asadmin list-applications`.
+6. Para acceder a la aplicación, abrir en el navegador la ruta `localhost:8080/nombre_proyecto` donde `nombre_proyecto` es el nombre del archivo `war`.
+7. Para replegar la aplicación lanzar `.\asadmin.bat undeploy nombre_war`, el `nombre_war` sin incluir la extensión.
+8. Para parar el servidor lanzar `.\asadmin.bat stop-domain`.
+
+#### Nota: todos los comandos son lanzados en PowerShell
