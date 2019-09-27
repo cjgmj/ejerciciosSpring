@@ -1,6 +1,6 @@
 # ejerciciosSpring
 
-### Para desplegar la aplicación desde terminal con el tomcat embebido
+### Para desplegar la aplicación desde terminal con el Tomcat embebido
 1. Realizamos un `mvn install` al proyecto para compilarlo.
 2. Accedemos desde el terminal a la raíz del proyecto.
 3. Ejecutamos `java -jar` al JAR o WAR generado por maven, dentro de la carpeta `target`.
