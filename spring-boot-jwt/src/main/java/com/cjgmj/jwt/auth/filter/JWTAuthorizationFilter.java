@@ -16,6 +16,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import com.cjgmj.jwt.auth.SimpleGrantedAuthorityMixin;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Claims;
@@ -47,14 +48,16 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 			validToken = true;
 		} catch (JwtException | IllegalArgumentException e) {
 			validToken = false;
+			e.printStackTrace();
 		}
 
 		UsernamePasswordAuthenticationToken authentication = null;
 
 		if (validToken) {
 			String username = token.getSubject();
-			Collection<? extends GrantedAuthority> authorities = Arrays.asList(new ObjectMapper()
-					.readValue(token.get("authorities").toString().getBytes(), SimpleGrantedAuthority[].class));
+			Collection<? extends GrantedAuthority> authorities = Arrays
+					.asList(new ObjectMapper().addMixIn(SimpleGrantedAuthority.class, SimpleGrantedAuthorityMixin.class)
+							.readValue(token.get("authorities").toString().getBytes(), SimpleGrantedAuthority[].class));
 			authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
 		}
 
@@ -63,7 +66,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 	}
 
 	protected boolean requiresAuthentication(String header) {
-		if (header == null || !header.toLowerCase().startsWith("Bearer ")) {
+		if (header == null || !header.startsWith("Bearer ")) {
 			return false;
 		}
 		return true;
