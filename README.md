@@ -22,3 +22,16 @@
 14. Para cambiar el nombre del proyecto ejecutar `Rename-Item nombre_inicio nombre_final` donde `nombre_inicio` es el nombre del `war` generado y `nombre_final` el nombre que se quiere poner, se tiene que dejar la extensión `war`.
 15. Para eliminar una aplicación desplegada en el servidor lanzar `rm nombre_proyecto` dentro de la carpeta `webapps`, también hay que eliminar el fichero `war`.
 16. Para parar el servidor lanzar `.\shutdown.bat` dentro de la carpeta `bin` del servidor.
+
+### Para desplegar la aplicación en un WildFly externo
+1. Los archivos `war` que se desplegarán se introducirán en la carpeta `standalone\deployments` dentro de la carpeta del servidor.
+2. Se puede cambiar la configuración dentro de la carpeta `standalone\configuration`.
+3. Ejecutar `mvn clean` para limpiar el contenido de la carpeta `target`.
+4. Cambiar la importación de `@Email` y `@@NotEmpty` hacia el paquete `org.hibernate.validator.constraints`.
+5. Realizamos un `mvn install` al proyecto para compilarlo.
+6. Iniciar el servido lanzando `.\standalone.bat` dentro de la carpeta `bin` del servidor.
+7. Abrir otra terminar y acceder a la carpeta `bin` del servidor y lanzar `.\jboss-cli.bat -c`.
+8. Una vez en la consola lanzar `deploy ruta_war` donde `ruta_war` es la dirección dentro de la carpeta `target` para desplegar la aplicación.
+9. Para acceder a la aplicación, abrir en el navegador la ruta `localhost:8080/nombre_proyecto` donde `nombre_proyecto` es el nombre del archivo `war`.
+10. En la consola de jboss, ejecutar `undeploy nombre_war` para replegar la aplicación.
+11. En la consola de jboss, ejecutar `shutdown` para parar el servidor, y salimos de la consola con `exit`.
