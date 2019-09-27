@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.cjgmj.jwt.auth.filter.JWTAuthenticationFilter;
 import com.cjgmj.jwt.auth.filter.JWTAuthorizationFilter;
+import com.cjgmj.jwt.auth.service.JWTService;
 import com.cjgmj.jwt.service.impl.JpaUserDetailsService;
 
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
@@ -26,6 +27,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private JpaUserDetailsService userDetailsService;
 
+	@Autowired
+	private JWTService jwtService;
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/", "/css/**", "/js/**", "/images/**", "/listar**", "/locale").permitAll()
@@ -34,9 +38,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 												 * .permitAll().and().logout().permitAll().and().exceptionHandling().
 												 * accessDeniedPage("/error_403")
 												 */.and()
-				.addFilter(new JWTAuthenticationFilter(authenticationManager()))
-				.addFilter(new JWTAuthorizationFilter(authenticationManager())).csrf().disable().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+				.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtService))
+				.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtService)).csrf().disable()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 
 	@Autowired

@@ -1,9 +1,6 @@
 package com.cjgmj.jwt.auth.filter;
 
 import java.io.IOException;
-import java.security.Key;
-import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,29 +13,25 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.cjgmj.jwt.auth.service.JWTService;
+import com.cjgmj.jwt.auth.service.impl.JWTServiceImpl;
 import com.cjgmj.jwt.entity.Usuario;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
-
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 	private AuthenticationManager authenticationManager;
 
-	public static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+	private JWTService jwtService;
 
-	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+	public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTService jwtService) {
 		this.authenticationManager = authenticationManager;
+		this.jwtService = jwtService;
 		setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/api/login", "POST"));
 	}
 
@@ -82,21 +75,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
 
-		String username = ((User) authResult.getPrincipal()).getUsername();
-		Collection<? extends GrantedAuthority> roles = authResult.getAuthorities();
+		String token = jwtService.create(authResult);
 
-		Claims claims = Jwts.claims();
-		claims.put("authorities", new ObjectMapper().writeValueAsString(roles));
-
-		String token = Jwts.builder().setClaims(claims).setSubject(username).signWith(SECRET_KEY)
-				.setIssuedAt(new Date()).setExpiration(new Date(System.currentTimeMillis() + 3600000L)).compact();
-
-		response.addHeader("Authorization", "Bearer " + token);
+		response.addHeader(JWTServiceImpl.HEADER_STRING, JWTServiceImpl.TOKEN_PREFIX + token);
 
 		Map<String, Object> body = new HashMap<>();
 		body.put("token", token);
 		body.put("user", authResult.getPrincipal());
-		body.put("mensaje", String.format("Hola %s, has iniciado sesión con éxito", username));
+		body.put("mensaje", String.format("Hola %s, has iniciado sesión con éxito", authResult.getName()));
 
 		response.getWriter().write(new ObjectMapper().writeValueAsString(body));
 		response.setStatus(200);

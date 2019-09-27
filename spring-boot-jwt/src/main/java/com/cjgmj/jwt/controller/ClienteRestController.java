@@ -1,6 +1,7 @@
 package com.cjgmj.jwt.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,6 +17,7 @@ public class ClienteRestController {
 
 	// Por defecto va a devolver XML, para obtener el JSON incluir en la URL
 	// ?format=json
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/listar")
 	public ClienteList listar() {
 		return new ClienteList(clienteService.findAll());
