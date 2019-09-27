@@ -1,4 +1,4 @@
-package com.cjgmj.jwt;
+package com.cjgmj.tomcat;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -6,10 +6,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.cjgmj.jwt.service.IUploadFileService;
+import com.cjgmj.tomcat.service.IUploadFileService;
 
 @SpringBootApplication
-public class SpringBootDataJpaApplication implements CommandLineRunner {
+public class SpringBootTomcatApplication implements CommandLineRunner {
 
 	@Autowired
 	private IUploadFileService uploadFileService;
@@ -18,7 +18,7 @@ public class SpringBootDataJpaApplication implements CommandLineRunner {
 	private BCryptPasswordEncoder passwordEncoder;
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBootDataJpaApplication.class, args);
+		SpringApplication.run(SpringBootTomcatApplication.class, args);
 	}
 
 	@Override
