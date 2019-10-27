@@ -1,5 +1,8 @@
 package com.cjgmj.reactor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -21,8 +24,19 @@ public class SpringBootReactorApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Flux<String> nombres = Flux.just("Joe Simons", "John Doe", "Linus Torvalds", "Jane Doe", "Rasmus Lerdorf",
-				"Erich Gamma", "Richard Helm");
+//		Flux<String> nombres = Flux.just("Joe Simons", "John Doe", "Linus Torvalds", "Jane Doe", "Rasmus Lerdorf",
+//				"Erich Gamma", "Richard Helm");
+
+		List<String> listaNombres = new ArrayList<>();
+		listaNombres.add("Joe Simons");
+		listaNombres.add("John Doe");
+		listaNombres.add("Linus Torvalds");
+		listaNombres.add("Jane Doe");
+		listaNombres.add("Rasmus Lerdorf");
+		listaNombres.add("Erich Gamma");
+		listaNombres.add("Richard Helm");
+
+		Flux<String> nombres = Flux.fromIterable(listaNombres);
 
 		// Los Observables son inmutables, no se varía la instancia del objeto original
 		Flux<Usuario> usuarios = nombres
