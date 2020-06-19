@@ -1,6 +1,8 @@
 package com.cjgmj.form.models.domain;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 public class Usuario {
 
@@ -13,12 +15,14 @@ public class Usuario {
 	private String apellidos;
 
 	@NotEmpty
+	@Size(min = 3, max = 8)
 	private String username;
 
-	@NotEmpty
+	@NotEmpty(message = "La contraseña no puede estar vacía")
 	private String password;
 
 	@NotEmpty
+	@Email(message = "El correo tiene un formato incorrecto")
 	private String email;
 
 	public String getIdentificador() {
