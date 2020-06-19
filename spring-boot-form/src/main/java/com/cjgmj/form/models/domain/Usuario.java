@@ -18,11 +18,11 @@ public class Usuario {
 	@Size(min = 3, max = 8)
 	private String username;
 
-	@NotEmpty(message = "La contraseña no puede estar vacía")
+	@NotEmpty
 	private String password;
 
 	@NotEmpty
-	@Email(message = "El correo tiene un formato incorrecto")
+	@Email
 	private String email;
 
 	public String getIdentificador() {
