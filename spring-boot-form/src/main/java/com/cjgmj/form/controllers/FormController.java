@@ -20,7 +20,6 @@ public class FormController {
 	@GetMapping("/form")
 	public String form(Model model) {
 		final Usuario usuario = new Usuario();
-		usuario.setIdentificador("THR3");
 		usuario.setNombre("John");
 		usuario.setApellidos("Doe");
 
