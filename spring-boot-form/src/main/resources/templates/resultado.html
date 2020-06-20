@@ -16,7 +16,10 @@
 		<li th:text="${usuario.password}"></li>
 		<li th:text="${usuario.email}"></li>
 		<li th:text="${usuario.cuenta}"></li>
-		<li th:text="${usuario.fechaNacimiento}"></li>
+		<!-- Tanto dates como calendars tienen la misma utilidad -->
+		<!-- Podemos leer la documentación de Thymeleaf en https://www.thymeleaf.org/documentation.html -->
+		<li th:text="${#dates.format(usuario.fechaNacimiento, 'dd/MM/yyyy')}"></li>
+		<li th:text="${#calendars.format(usuario.fechaNacimiento, 'yyyy-MM-dd')}"></li>
 	</ul>
 </body>
 </html>
