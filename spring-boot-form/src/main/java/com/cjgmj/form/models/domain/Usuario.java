@@ -1,8 +1,11 @@
 package com.cjgmj.form.models.domain;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.cjgmj.form.validation.IdentificadorRegex;
@@ -28,6 +31,11 @@ public class Usuario {
 	@NotEmpty
 	@Email
 	private String email;
+
+	@NotNull // @NotNull para los objetos, para los String @NotEmpty o @NotBlank
+	@Min(5)
+	@Max(5000)
+	private Integer cuenta;
 
 	public String getIdentificador() {
 		return this.identificador;
@@ -75,6 +83,14 @@ public class Usuario {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public Integer getCuenta() {
+		return this.cuenta;
+	}
+
+	public void setCuenta(Integer cuenta) {
+		this.cuenta = cuenta;
 	}
 
 }
