@@ -1,6 +1,7 @@
 package com.cjgmj.form.models.domain;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -8,7 +9,7 @@ public class Usuario {
 
 	private String identificador;
 
-	@NotEmpty
+	@NotBlank // Es como @NotEmpty pero comprueba también que no sea espacios en blanco
 	private String nombre;
 
 	@NotEmpty
