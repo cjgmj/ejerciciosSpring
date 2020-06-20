@@ -2,12 +2,10 @@ package com.cjgmj.form.models.domain;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class Usuario {
 
-	@Pattern(regexp = "[0-9]{8}[-]?[A-Z]{1}")
 	private String identificador;
 
 	@NotEmpty
@@ -16,7 +14,6 @@ public class Usuario {
 	@NotEmpty
 	private String apellidos;
 
-	@NotEmpty
 	@Size(min = 3, max = 8)
 	private String username;
 
