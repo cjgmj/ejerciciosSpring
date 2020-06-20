@@ -44,6 +44,9 @@ public class Usuario {
 	@Past
 	private Date fechaNacimiento;
 
+	@NotEmpty
+	private String pais;
+
 	public String getIdentificador() {
 		return this.identificador;
 	}
@@ -106,6 +109,14 @@ public class Usuario {
 
 	public void setFechaNacimiento(Date fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public String getPais() {
+		return this.pais;
+	}
+
+	public void setPais(String pais) {
+		this.pais = pais;
 	}
 
 }

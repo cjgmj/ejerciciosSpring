@@ -1,7 +1,9 @@
 package com.cjgmj.form.controllers;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -39,6 +41,12 @@ public class FormController {
 
 		binder.registerCustomEditor(String.class, "nombre", new NombreMayusculaEditor());
 		binder.registerCustomEditor(String.class, "apellidos", new NombreMayusculaEditor());
+	}
+
+	// Con @ModelAttribute se le pasa el contenido del método a la vista
+	@ModelAttribute("paises")
+	public List<String> paises() {
+		return Arrays.asList("España", "México", "Chile", "Argentina", "Perú", "Colombia", "Venezuela");
 	}
 
 	@GetMapping("/form")
