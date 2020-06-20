@@ -5,14 +5,18 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import com.cjgmj.form.validation.IdentificadorRegex;
+import com.cjgmj.form.validation.Requerido;
+
 public class Usuario {
 
+	@IdentificadorRegex
 	private String identificador;
 
 	@NotBlank // Es como @NotEmpty pero comprueba también que no sea espacios en blanco
 	private String nombre;
 
-	@NotEmpty
+	@Requerido
 	private String apellidos;
 
 	@Size(min = 3, max = 8)
