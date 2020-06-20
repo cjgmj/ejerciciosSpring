@@ -11,8 +11,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.cjgmj.form.validation.IdentificadorRegex;
 import com.cjgmj.form.validation.Requerido;
 
@@ -44,7 +42,6 @@ public class Usuario {
 
 	@NotNull
 	@Past
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date fechaNacimiento;
 
 	public String getIdentificador() {
