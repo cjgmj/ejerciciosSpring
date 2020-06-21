@@ -25,6 +25,7 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import com.cjgmj.form.editors.NombreMayusculaEditor;
 import com.cjgmj.form.editors.PaisPropertyEditor;
+import com.cjgmj.form.editors.RolesEditor;
 import com.cjgmj.form.models.domain.Pais;
 import com.cjgmj.form.models.domain.Role;
 import com.cjgmj.form.models.domain.Usuario;
@@ -41,6 +42,9 @@ public class FormController {
 
 	@Autowired
 	private PaisPropertyEditor paisEditor;
+
+	@Autowired
+	private RolesEditor rolesEditor;
 
 	@Autowired
 	private PaisService paisService;
@@ -60,6 +64,7 @@ public class FormController {
 		binder.registerCustomEditor(String.class, "apellidos", new NombreMayusculaEditor());
 
 		binder.registerCustomEditor(Pais.class, "pais", this.paisEditor);
+		binder.registerCustomEditor(Role.class, "roles", this.rolesEditor);
 	}
 
 	// Con @ModelAttribute se le pasa el contenido del método a la vista
