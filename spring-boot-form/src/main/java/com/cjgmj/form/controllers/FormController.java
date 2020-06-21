@@ -26,8 +26,10 @@ import org.springframework.web.bind.support.SessionStatus;
 import com.cjgmj.form.editors.NombreMayusculaEditor;
 import com.cjgmj.form.editors.PaisPropertyEditor;
 import com.cjgmj.form.models.domain.Pais;
+import com.cjgmj.form.models.domain.Role;
 import com.cjgmj.form.models.domain.Usuario;
 import com.cjgmj.form.services.PaisService;
+import com.cjgmj.form.services.RoleService;
 import com.cjgmj.form.validation.UsuarioValidador;
 
 @Controller
@@ -38,10 +40,13 @@ public class FormController {
 	private UsuarioValidador validador;
 
 	@Autowired
+	private PaisPropertyEditor paisEditor;
+
+	@Autowired
 	private PaisService paisService;
 
 	@Autowired
-	private PaisPropertyEditor paisEditor;
+	private RoleService roleService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -81,6 +86,11 @@ public class FormController {
 		paises.put("VE", "Venezuela");
 
 		return paises;
+	}
+
+	@ModelAttribute("listaRoles")
+	public List<Role> listaRoles() {
+		return this.roleService.listar();
 	}
 
 	@ModelAttribute("listaRolesString")
