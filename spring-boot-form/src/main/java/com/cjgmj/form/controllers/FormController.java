@@ -3,7 +3,9 @@ package com.cjgmj.form.controllers;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -47,6 +49,21 @@ public class FormController {
 	@ModelAttribute("paises")
 	public List<String> paises() {
 		return Arrays.asList("España", "México", "Chile", "Argentina", "Perú", "Colombia", "Venezuela");
+	}
+
+	@ModelAttribute("paisesMap")
+	public Map<String, String> paisesMap() {
+		final Map<String, String> paises = new HashMap<>();
+
+		paises.put("ES", "España");
+		paises.put("MX", "México");
+		paises.put("CL", "Chile");
+		paises.put("AR", "Argentina");
+		paises.put("PE", "Perú");
+		paises.put("CO", "Colombia");
+		paises.put("VE", "Venezuela");
+
+		return paises;
 	}
 
 	@GetMapping("/form")
