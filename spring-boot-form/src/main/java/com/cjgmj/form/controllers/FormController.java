@@ -120,6 +120,11 @@ public class FormController {
 		return roles;
 	}
 
+	@ModelAttribute("generos")
+	public List<String> genero() {
+		return Arrays.asList("Hombre", "Mujer");
+	}
+
 	@GetMapping("/form")
 	public String form(Model model) {
 		final Usuario usuario = new Usuario();

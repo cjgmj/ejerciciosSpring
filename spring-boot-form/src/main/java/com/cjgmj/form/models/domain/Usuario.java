@@ -53,6 +53,9 @@ public class Usuario {
 
 	private Boolean habilitar;
 
+	@NotEmpty
+	private String genero;
+
 	public String getIdentificador() {
 		return this.identificador;
 	}
@@ -139,6 +142,14 @@ public class Usuario {
 
 	public void setHabilitar(Boolean habilitar) {
 		this.habilitar = habilitar;
+	}
+
+	public String getGenero() {
+		return this.genero;
+	}
+
+	public void setGenero(String genero) {
+		this.genero = genero;
 	}
 
 }
