@@ -131,6 +131,7 @@ public class FormController {
 		usuario.setNombre("John");
 		usuario.setApellidos("Doe");
 		usuario.setHabilitar(Boolean.TRUE);
+		usuario.setValorSecreto("*** Valor secreto ***");
 
 		model.addAttribute("titulo", "Formulario usuarios");
 		model.addAttribute("usuario", usuario);

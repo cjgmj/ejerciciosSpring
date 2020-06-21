@@ -56,6 +56,8 @@ public class Usuario {
 	@NotEmpty
 	private String genero;
 
+	private String valorSecreto;
+
 	public String getIdentificador() {
 		return this.identificador;
 	}
@@ -150,6 +152,14 @@ public class Usuario {
 
 	public void setGenero(String genero) {
 		this.genero = genero;
+	}
+
+	public String getValorSecreto() {
+		return this.valorSecreto;
+	}
+
+	public void setValorSecreto(String valorSecreto) {
+		this.valorSecreto = valorSecreto;
 	}
 
 }

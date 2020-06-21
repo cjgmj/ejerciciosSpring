@@ -24,6 +24,7 @@
 		<!-- Podemos leer la documentación de Thymeleaf en https://www.thymeleaf.org/documentation.html -->
 		<li th:text="${#dates.format(usuario.fechaNacimiento, 'dd/MM/yyyy')}"></li>
 		<li th:text="${#calendars.format(usuario.fechaNacimiento, 'yyyy-MM-dd')}"></li>
+		<li th:text="'Valor oculto: ' + ${usuario.valorSecreto}"></li>
 	</ul>
 	
 	<div>Roles</div>
