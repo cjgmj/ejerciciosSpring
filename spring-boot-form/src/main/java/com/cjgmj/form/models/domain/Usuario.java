@@ -1,6 +1,7 @@
 package com.cjgmj.form.models.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
@@ -35,7 +36,7 @@ public class Usuario {
 	@Email
 	private String email;
 
-	@NotNull // @NotNull para los objetos, para los String @NotEmpty o @NotBlank
+	@NotNull // @NotNull para los objetos, para los String y las listas @NotEmpty o @NotBlank
 	@Min(5)
 	@Max(5000)
 	private Integer cuenta;
@@ -46,6 +47,9 @@ public class Usuario {
 
 	@NotNull
 	private Pais pais;
+
+	@NotEmpty
+	private List<String> roles;
 
 	public String getIdentificador() {
 		return this.identificador;
@@ -117,6 +121,14 @@ public class Usuario {
 
 	public void setPais(Pais pais) {
 		this.pais = pais;
+	}
+
+	public List<String> getRoles() {
+		return this.roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 
 }
