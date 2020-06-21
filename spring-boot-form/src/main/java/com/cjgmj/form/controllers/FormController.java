@@ -25,6 +25,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import com.cjgmj.form.editors.NombreMayusculaEditor;
 import com.cjgmj.form.models.domain.Pais;
 import com.cjgmj.form.models.domain.Usuario;
+import com.cjgmj.form.services.PaisService;
 import com.cjgmj.form.validation.UsuarioValidador;
 
 @Controller
@@ -33,6 +34,9 @@ public class FormController {
 
 	@Autowired
 	private UsuarioValidador validador;
+
+	@Autowired
+	private PaisService paisService;
 
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -49,9 +53,7 @@ public class FormController {
 	// Con @ModelAttribute se le pasa el contenido del método a la vista
 	@ModelAttribute("listaPaises")
 	public List<Pais> listaPaises() {
-		return Arrays.asList(new Pais(1, "ES", "España"), new Pais(2, "MX", "México"), new Pais(3, "CL", "Chile"),
-				new Pais(4, "AR", "Argentina"), new Pais(5, "PE", "Perú"), new Pais(6, "CO", "Colombia"),
-				new Pais(7, "VE", "Venezuela"));
+		return this.paisService.listar();
 	}
 
 	@ModelAttribute("paises")
