@@ -8,10 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-@Component
+@Component("tiempoTranscurridoInterceptor")
 public class TiempoTranscurridoInterceptor implements HandlerInterceptor {
 
 	private static final Logger LOG = LoggerFactory.getLogger(TiempoTranscurridoInterceptor.class);
@@ -19,7 +20,12 @@ public class TiempoTranscurridoInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		LOG.info("TiempoTranscurridoInterceptor: preHandle()");
+		if (handler instanceof HandlerMethod) {
+			LOG.info("Es un método del controlador: " + ((HandlerMethod) handler).getMethod().getName());
+		}
+
+		LOG.info("TiempoTranscurridoInterceptor: preHandle() empieza");
+		LOG.info("Interceptando: " + handler);
 
 		final Long tiempoInicio = System.currentTimeMillis();
 		request.setAttribute("tiempoInicio", tiempoInicio);
@@ -34,17 +40,16 @@ public class TiempoTranscurridoInterceptor implements HandlerInterceptor {
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
-		LOG.info("TiempoTranscurridoInterceptor: postHandle()");
-
 		final Long tiempoFin = System.currentTimeMillis();
 		final Long tiempoInicio = (Long) request.getAttribute("tiempoInicio");
 		final Long tiempoTranscurrido = tiempoFin - tiempoInicio;
 
-		if (modelAndView != null) {
+		if (modelAndView != null && handler instanceof HandlerMethod) {
 			modelAndView.addObject("tiempoTranscurrido", tiempoTranscurrido);
 		}
 
 		LOG.info("Tiempo transcurrido: " + tiempoTranscurrido + " milisegundos");
+		LOG.info("TiempoTranscurridoInterceptor: postHandle() acaba");
 	}
 
 }

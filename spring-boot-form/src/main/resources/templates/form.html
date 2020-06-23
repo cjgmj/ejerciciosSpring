@@ -6,8 +6,11 @@
 <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 </head>
 <body>
-	<h3 th:text="${titulo}"></h3>
+	<div class="alert alert-success">
+		<span th:text="'Tiempo transcurrido: ' + ${tiempoTranscurrido} + ' en milisegundos'"></span>
+	</div>
 	<div class="container">
+		<h3 th:text="${titulo}"></h3>
 		<form th:action="@{/form}" th:object="${usuario}" method="post">
 			<div class="form-group row">
 				<label for="habilitar" class="col-form-label col-sm-2">Habiltiar</label>
