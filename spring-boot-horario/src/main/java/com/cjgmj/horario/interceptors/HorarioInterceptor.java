@@ -32,7 +32,7 @@ public class HorarioInterceptor implements HandlerInterceptor {
 			mensaje.append(" horas");
 			mensaje.append(" hasta las");
 			mensaje.append(this.cierre);
-			mensaje.append(" horas. Gracias por su visita");
+			mensaje.append(" horas. Gracias por su visita.");
 
 			request.setAttribute("mensaje", mensaje.toString());
 
