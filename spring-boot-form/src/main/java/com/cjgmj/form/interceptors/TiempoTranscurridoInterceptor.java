@@ -38,6 +38,10 @@ public class TiempoTranscurridoInterceptor implements HandlerInterceptor {
 		final Integer delay = random.nextInt(500);
 		Thread.sleep(delay);
 
+		// Si se devuelve false se tiene que redirigir con
+		// response.sendRedirect(request.getContextPath().concat("/login"); Donde login
+		// es la ruta a la que se quiere redirigir
+
 		return true;
 	}
 
