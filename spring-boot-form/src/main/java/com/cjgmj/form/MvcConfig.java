@@ -18,7 +18,7 @@ public class MvcConfig implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		// Se puede configurar para unas rutas específicas con el método
 		// .addPathPatterns()
-		registry.addInterceptor(this.tiempoTranscurridoInterceptor);
+		registry.addInterceptor(this.tiempoTranscurridoInterceptor).addPathPatterns("/form/**");
 	}
 
 }

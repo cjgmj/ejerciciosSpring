@@ -20,6 +20,10 @@ public class TiempoTranscurridoInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		if ("POST".equalsIgnoreCase(request.getMethod())) {
+			return true;
+		}
+
 		if (handler instanceof HandlerMethod) {
 			LOG.info("Es un método del controlador: " + ((HandlerMethod) handler).getMethod().getName());
 		}
@@ -40,6 +44,10 @@ public class TiempoTranscurridoInterceptor implements HandlerInterceptor {
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
+		if ("POST".equalsIgnoreCase(request.getMethod())) {
+			return;
+		}
+
 		final Long tiempoFin = System.currentTimeMillis();
 		final Long tiempoInicio = (Long) request.getAttribute("tiempoInicio");
 		final Long tiempoTranscurrido = tiempoFin - tiempoInicio;
