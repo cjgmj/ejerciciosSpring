@@ -2,6 +2,7 @@ package com.cjgmj.error.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 		}
 
 		return usuario;
+	}
+
+	@Override
+	public Optional<Usuario> obtenerPorIdOptional(Integer id) {
+		final Usuario usuario = this.obtenerPorId(id);
+
+		return Optional.ofNullable(usuario);
 	}
 
 }
